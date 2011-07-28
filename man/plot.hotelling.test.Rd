@@ -1,0 +1,31 @@
+\name{plot.hotelling.test}
+\alias{plot.hotelling.test}
+\title{Plots the results from a permutation based version of Hotelling's
+T-squared test for the difference in two multivariate sample means}
+\description{
+  Plots a histogram of the distribution of the permuted test statistics
+  for a permutation version of Hotelling's T-squared
+}
+\usage{
+\method{plot}{hotelling.test}(x,\dots)
+}
+\arguments{
+  \item{x}{an object of type hotelling.test}
+  \item{\dots}{any additional arguments to be passed to the hist command}
+}
+\details{
+  This function only works if you have performed a permutation test. It
+  will return an error message if not. It could be programmed to draw
+  the relevant F distribution in the standard case, but this seems
+  rather pointless.
+}
+\examples{
+data(bottle.df)
+bottle.df = subset(bottle.df, Number == 1)
+bottle.df$Number = rep(1:2,c(10,10))
+fit = hotelling.test(.~Number, bottle.df, perm = TRUE)
+plot(fit)
+plot(fit, col = "lightblue")
+}
+\author{James M. Curran}
+\keyword{plot}
