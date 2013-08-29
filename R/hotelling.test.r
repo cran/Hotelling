@@ -124,7 +124,7 @@ print.hotelling.test = function(x, ...){
                 cat(paste("Test stat: ", signif(m*statistic, 5), "\n"));
                 cat(paste("Numerator df: ", stats$df[1], "\n"))});
             cat(paste("Denominator df: ", x$stats$df[2], "\n"));
-            cat(paste("Permuation P-value: ", signif(x$pval, 4), "\n"));
+            cat(paste("Permutation P-value: ", signif(x$pval, 4), "\n"));
             cat(paste("Number of permutations :", length(x$results), "\n"))          })
     }
 }

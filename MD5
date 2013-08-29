@@ -1,10 +1,10 @@
-9ce2a99b648f00c47bfbd1e38d9ca156 *DESCRIPTION
-66cfca78af08ac73f2dec73cbde888b3 *NAMESPACE
+fed021b21b7b785099e8b6382c53c8c3 *DESCRIPTION
+f93a0b3a426e536c4572d7e03354d735 *NAMESPACE
 47fcdd4340d1b8a6d6535b95c6752999 *R/alr.R
 583c55a37755779c662678ad2c638056 *R/clr.R
-7379937ab32e76c9e6fe1244a2d152fa *R/hotelling.test.r
-4937c0cd760150afce143825c1dc525d *data/bottle.df.txt.gz
-029f1d0b5493d3b6e36ed4ef1ab22c3f *data/container.df.txt.gz
+9830ab8554051a412827124468a4aa96 *R/hotelling.test.r
+885c51fbebf1ca4aa8e24c8844a823f7 *data/bottle.df.txt.gz
+525576a5f1458a59e9d815678e730f98 *data/container.df.txt.gz
 5ac230bea5ed4f44d99b416ddbdb00b2 *man/alr.Rd
 960e0fcc84dae3b0cbea69746a1c3f17 *man/bottle.df.Rd
 e6a40fe2408213fd8c0346038dd34202 *man/clr.Rd
