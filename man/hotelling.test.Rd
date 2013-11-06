@@ -10,7 +10,7 @@
 \usage{
 hotelling.test(x, \dots)
 \method{hotelling.test}{default}(x, y, shrinkage = FALSE, perm = FALSE,
-                                 B = 10000, \dots)
+                                 B = 10000, progBar = (perm && TRUE), \dots)
 \method{hotelling.test}{formula}(x, data = NULL, pair = c(1, 2), \dots)
 }
 \arguments{
@@ -25,6 +25,7 @@ hotelling.test(x, \dots)
     non-parametric P-value for the hypothesis test}
   \item{B}{if perm is TRUE, then B is the number of permutations to
     perform}
+  \item{progBar}{if TRUE and \code{perm} is TRUE then a progress bar will be displayed whilst the permutation procedure is carried out}
   \item{data}{a data frame needs to be specified if a formula is to be
     used to perform the test}
   \item{pair}{a vector of length two which can be used when the grouping

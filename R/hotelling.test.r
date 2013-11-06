@@ -25,8 +25,8 @@ hotelling.stat = function(x, y, shrinkage = FALSE)
         sx = cov(x)
         sy = cov(y)
     }else{
-        sx = cov.shrink(x)
-        sy = cov.shrink(y)
+        sx = cov.shrink(x, verbose = FALSE)
+        sy = cov.shrink(y, verbose = FALSE)
     }
 
     sPooled = ((nx - 1)*sx + (ny - 1)*sy)/(nx + ny - 2)
@@ -44,7 +44,7 @@ hotelling.test = function(x, ...){
 }
 
 hotelling.test.default = function(x, y, shrinkage = FALSE, perm = FALSE,
-                                  B = 10000, ...){
+                                  B = 10000, progBar = (perm && TRUE), ...){
     if(!perm){
         stats = hotelling.stat(x, y, shrinkage)
         pVal = with(stats, 1 - pf(m*statistic, df[1], df[2]))
@@ -62,6 +62,14 @@ hotelling.test.default = function(x, y, shrinkage = FALSE, perm = FALSE,
 
         idx = 1:N
         X = rbind(x, y)
+        
+        onePercent = floor(B / 100)
+        pb = NULL
+        if(progBar){
+          pb = txtProgressBar(min = 0, max = 100, initial = 0, style = 3)
+        }
+        j = 0
+        k = 0
 
         for(i in 1:B){
             i1 = sample(idx, nx)
@@ -69,6 +77,12 @@ hotelling.test.default = function(x, y, shrinkage = FALSE, perm = FALSE,
             x2 = X[-i1,]
 
             res[i] = hotelling.stat(x1, x2, shrinkage)$statistic
+            j = j + 1
+            if(j == onePercent && progBar){
+              k = k + 1
+              j = 0
+              setTxtProgressBar(pb, k)
+            }
         }
 
         pVal = sum(res > T0)/B
@@ -104,10 +118,30 @@ plot.hotelling.test = function(x,...){
     if(is.na(match("results",names(x))))
         stop("Plotting only works if you have used the permutation test")
 
-    with(x,{
-         hist(stats$m*results, main = "Distribution of permuted test stats",
-              xlab = expression(T^2),...);
-         abline(v = with(stats, m*statistic, lwd = 2))})
+    dotArgNames = names(list(...))
+    
+    if("xlim" %in% dotArgNames){
+      with(x,{
+         h = hist(stats$m*results, main = "Distribution of permuted test stats",
+                  xlab = expression(T^2),...);
+         T0 = with(stats, m*statistic)
+         lines(rep(T0, 2), c(0, max(h$counts)), lwd = 2)
+         }
+      )
+    }else{
+      ## Try to do something sensible to make sure the test statistic is visible
+      ## in the plotting window, ONLY if the user isn't over-riding xlim
+      with(x,{
+        r = range(c(stats$m * results, stats$m * stats$statistic));
+        pr = pretty(r);
+        h = hist(stats$m * results, main = "Distribution of permuted test stats",
+             xlab = expression(T^2), xlim = c(min(pr), max(pr)), ...);
+        #abline(v = with(stats, m*statistic, lwd = 2))
+        T0 = with(stats, m*statistic)
+        lines(rep(T0, 2), c(0, max(h$counts)), lwd = 2)
+        }
+      )
+    }
 }
 
 print.hotelling.test = function(x, ...){
