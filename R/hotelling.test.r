@@ -1,5 +1,48 @@
-hotelling.stat = function(x, y, shrinkage = FALSE)
-{
+#' Calculate Hotelling's two sample T-squared test statistic
+#' 
+#' Calculate Hotelling's T-squared test statistic for the difference in two
+#' multivariate means.
+#' 
+#' Note, the sample size requirements are that nx + ny - 1 > p. The procedure
+#' will stop if this is not met and the shrinkage estimator is not being used.
+#' The shrinkage estimator has not been rigorously tested for this application
+#' (small p, smaller n).
+#' 
+#' @aliases hotelling.stat hotel.stat
+#' @param x a nx by p matrix containing the data points from sample 1
+#' @param y a ny by p matrix containg the data points from sample 2
+#' @param shrinkage set to \code{TRUE} if the covariance matrices are to be estimated
+#' using Schaefer and Strimmer's James-Stein shrinkage estimator
+#' @return A list containing the following components:
+#' \item{statistic}{Hotelling's (unscaled) T-squared statistic} \item{m}{The
+#' scaling factor - this can be used by by multiplying it with the test
+#' statistic, or dividing the critical F value} \item{df}{a vector of length
+#' containing the numerator and denominator degrees of freedom} \item{nx}{The
+#' sample size of sample 1} \item{ny}{The sample size of sample 2} \item{p}{The
+#' number of variables to be used in the comparison}
+#' @author James M. Curran
+#' @references Hotelling, H. (1931). ``The generalization of Student's ratio.''
+#' Annals of Mathematical Statistics 2 (3): 360--378.
+#' 
+#' Schaefer, J., and K. Strimmer (2005). ``A shrinkage approach to large-scale
+#' covariance matrix estimation and implications for functional genomics.''
+#' Statist. Appl. Genet. Mol. Biol. 4: 32.
+#' 
+#' Opgen-Rhein, R., and K. Strimmer (2007). ``Accurate ranking of
+#' differentially expressed genes by a distribution-free shrinkage approach.''
+#' Statist. Appl. Genet. Mol. Biol. 6: 9.
+#' @keywords htest
+#' @examples
+#' 
+#' data(container.df)
+#' split.data = split(container.df[,-1],container.df$gp)
+#' x = split.data[[1]]
+#' y = split.data[[2]]
+#' hotelling.stat(x, y)
+#' hotelling.stat(x, y, TRUE)
+#' 
+#' @export
+hotelling.stat = function(x, y, shrinkage = FALSE){
     ## get the sample sizes for each sample
     nx = nrow(x)
     ny = nrow(y)
@@ -39,10 +82,84 @@ hotelling.stat = function(x, y, shrinkage = FALSE)
                    nx = nx, ny = ny, p = p))
 }
 
+
+
+#' Two-sample Hotelling's T-squared test
+#' 
+#' Performs a two-sample Hotelling's T-squared test for the difference in two
+#' multivariate means
+#' 
+#' 
+#' @aliases hotelling.test hotelling.test.default hotelling.test.formula
+#' hotel.test
+#' @param x a matrix containing the data points from sample 1 or a formula
+#' specifying the elements to be used as a response and the grouping variable
+#' as a predictor
+#' @param y a matrix containing the data points from sample 2
+#' @param shrinkage if \code{TRUE} then Shaefer and Strimmer's James-Stein shrinkage
+#' estimator is used to calculate the sample covariance matrices
+#' @param perm if \code{TRUE} then permutation testing is used to estimate the
+#' non-parametric P-value for the hypothesis test
+#' @param B if perm is TRUE, then B is the number of permutations to perform
+#' @param progBar if \code{TRUE} and \code{perm} is TRUE then a progress bar will be
+#' displayed whilst the permutation procedure is carried out
+#' @param data a data frame needs to be specified if a formula is to be used to
+#' perform the test
+#' @param pair a vector of length two which can be used when the grouping
+#' factor has more than two levels to select different pairs of groups. For
+#' example for a 3-level factor, pairs could be set to \code{c(1,3)} to perform
+#' Hotelling's test between groups 1 an 3
+#' @param \dots any additional arguments. This is useful to pass the optional
+#' arguments for the default call from the formula version
+#' @return A list (which is also of class 'hotelling.test') with the following
+#' elements:
+#' 
+#' \item{stats}{a list containing all of the output from \code{hotelling.stat}}
+#' \item{pval}{the P-value from the test} \item{results}{if \code{perm == TRUE}, then
+#' all of the permuation test statisics are stored in results}
+#' @author James M. Curran
+#' @seealso hotelling.stat
+#' @references Hotelling, H. (1931). ``The generalization of Student's ratio.''
+#' Annals of Mathematical Statistics 2 (3): 360--378.
+#' 
+#' Schaefer, J., and K. Strimmer (2005). ``A shrinkage approach to large-scale
+#' covariance matrix estimation and implications for functional genomics.''
+#' Statist. Appl. Genet. Mol. Biol. 4: 32.
+#' 
+#' Opgen-Rhein, R., and K. Strimmer (2007). ``Accurate ranking of
+#' differentially expressed genes by a distribution-free shrinkage approach.''
+#' Statist. Appl. Genet. Mol. Biol. 6: 9.
+#' 
+#' Campbell, G.P. and J. M. Curran (2009). ``The interpretation of elemental
+#' composition measurements from forensic glass evidence III.'' Science and
+#' Justice, 49(1),2-7.
+#' @keywords htest
+#' @examples
+#' 
+#' data(container.df)
+#' fit = hotelling.test(.~gp, data = container.df)
+#' fit
+#' 
+#' subs.df = container.df[1:10,]
+#' subs.df$gp = rep(1:2, c(5,5))
+#' fitPerm = hotelling.test(Al+Fe~gp, data  = subs.df, perm =  TRUE)
+#' fitPerm
+#' plot(fitPerm)
+#' 
+#' data(bottle.df)
+#' fit12 = hotelling.test(.~Number, data = bottle.df)
+#' fit12
+#' 
+#' fit23 = hotelling.test(.~Number, data = bottle.df, pair = c(2,3))
+#' fit23
+#' 
+#' @export
 hotelling.test = function(x, ...){
     UseMethod("hotelling.test")
 }
 
+#' @describeIn hotelling.test Two-sample Hotelling's T-squared test
+#' @export
 hotelling.test.default = function(x, y, shrinkage = FALSE, perm = FALSE,
                                   B = 10000, progBar = (perm && TRUE), ...){
     if(!perm){
@@ -92,6 +209,8 @@ hotelling.test.default = function(x, y, shrinkage = FALSE, perm = FALSE,
     }
 }
 
+#' @describeIn hotelling.test Two-sample Hotelling's T-squared test
+#' @export
 hotelling.test.formula = function(x, data = NULL, pair = c(1,2), ...){
     if(missing(x) || class(x) != "formula")
         stop("missing or incorrect formula")
@@ -114,6 +233,32 @@ hotelling.test.formula = function(x, data = NULL, pair = c(1,2), ...){
     hotelling.test(x1, x2, ...)
 }
 
+
+
+#' Plots the results from a permutation based version of Hotelling's T-squared
+#' test for the difference in two multivariate sample means
+#' 
+#' Plots a histogram of the distribution of the permuted test statistics for a
+#' permutation version of Hotelling's T-squared
+#' 
+#' This function only works if you have performed a permutation test. It will
+#' return an error message if not. It could be programmed to draw the relevant
+#' F distribution in the standard case, but this seems rather pointless.
+#' 
+#' @param x an object of type hotelling.test
+#' @param \dots any additional arguments to be passed to the hist command
+#' @author James M. Curran
+#' @keywords plot
+#' @examples
+#' 
+#' data(bottle.df)
+#' bottle.df = subset(bottle.df, Number == 1)
+#' bottle.df$Number = rep(1:2,c(10,10))
+#' fit = hotelling.test(.~Number, bottle.df, perm = TRUE)
+#' plot(fit)
+#' plot(fit, col = "lightblue")
+#' 
+#' @export
 plot.hotelling.test = function(x,...){
     if(is.na(match("results",names(x))))
         stop("Plotting only works if you have used the permutation test")
@@ -144,6 +289,32 @@ plot.hotelling.test = function(x,...){
     }
 }
 
+
+
+#' Prints the results from a Hotelling's T-squared test for the difference in
+#' two multivariate sample means
+#' 
+#' Prints the test stastic, degrees of freedom and P-value from Hotelling's
+#' T-squared test for the difference in two multivariate sample means
+#' 
+#' 
+#' @param x an object of type hotelling.test
+#' @param \dots any additional arguments to be passed to the hist command
+#' @author James M. Curran
+#' @keywords print
+#' @examples
+#' 
+#' data(bottle.df)
+#' bottle.df = subset(bottle.df, Number == 1)
+#' bottle.df$Number = rep(1:2,c(10,10))
+#' fit = hotelling.test(.~Number, bottle.df, perm = TRUE)
+#' fit
+#' fit = hotelling.test(.~Number, bottle.df)
+#' fit
+#' 
+#' ## an explict call
+#' print(fit)
+#' 
 print.hotelling.test = function(x, ...){
     if(is.na(match("results",names(x)))){
         with(x,{
