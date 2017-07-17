@@ -1,9 +1,9 @@
-3580c268204ea5e77b51988311d73fbc *DESCRIPTION
+45a42eca25b32a1cfde6ea4205a7bcf0 *DESCRIPTION
 649f3b381a4d5bb85c2c35bc3e888f79 *NAMESPACE
 0a593b731c9f80f698632ea9c5978ad8 *R/Hotelling-package.R
 5fca4e001da0d0d7db1ab535a968344c *R/alr.R
 9d9b4d5d1e5b86d4ecd0315604d40fec *R/clr.R
-a77627a6c7bc132ee22cd8046fb473f8 *R/hotelling.test.r
+28fc9bfd52e924b3f01c938f63ed0879 *R/hotelling.test.r
 1cc1e71d1cc1b7457d812762b6a4e6d3 *README.md
 c5cb83884812f168d86e0d685d3f376e *data/bottle.df.txt.gz
 3bb473446a571300e5d85107e168c918 *data/container.df.txt.gz
