@@ -1,9 +1,9 @@
-45a42eca25b32a1cfde6ea4205a7bcf0 *DESCRIPTION
-649f3b381a4d5bb85c2c35bc3e888f79 *NAMESPACE
+b4029aa07fa2546615d6e8cc63ecbf15 *DESCRIPTION
+7cbb13c259b0b180f247991169fc2c60 *NAMESPACE
 0a593b731c9f80f698632ea9c5978ad8 *R/Hotelling-package.R
 5fca4e001da0d0d7db1ab535a968344c *R/alr.R
 9d9b4d5d1e5b86d4ecd0315604d40fec *R/clr.R
-28fc9bfd52e924b3f01c938f63ed0879 *R/hotelling.test.r
+fb16885967d90b198f5b7847f5e4d1ec *R/hotelling.test.r
 1cc1e71d1cc1b7457d812762b6a4e6d3 *README.md
 c5cb83884812f168d86e0d685d3f376e *data/bottle.df.txt.gz
 3bb473446a571300e5d85107e168c918 *data/container.df.txt.gz
@@ -13,6 +13,6 @@ c5cb83884812f168d86e0d685d3f376e *data/bottle.df.txt.gz
 a0bbdec76c95066563608fcdeeb8949f *man/clr.Rd
 0f2bd8e8c66532570866c1423f13d854 *man/container.df.Rd
 14b29c54e45cdbe8655f87f40d1859ea *man/hotelling.stat.Rd
-21ce82fa298bbf9951b06778a01de28d *man/hotelling.test.Rd
+9a20b63862cf7f4ffde23463d39fb20b *man/hotelling.test.Rd
 c124ca8d01e2dac8be5aa38624aecd52 *man/plot.hotelling.test.Rd
 c13162086943e057a8f19dee4462efa1 *man/print.hotelling.test.Rd
